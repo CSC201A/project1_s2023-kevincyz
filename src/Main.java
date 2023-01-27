@@ -3,7 +3,7 @@
  *
  * Honor Pledge:
  * The code submitted for this project was developed by
- * YOUR NAME HERE without outside assistance or consultation
+ * Kevin Cheng without outside assistance or consultation
  * other than that allowed by the instructions for this project.
  *
  */
@@ -23,10 +23,10 @@ public class Main {
     // Use a List to store and count shingles encountered in a text file
 
     // Students with last name starting with A-L use an ArrayList
-    //private static ArrayList<Node<String>> shingles = new ArrayList<>();
+    private static ArrayList<Node<String>> shingles = new ArrayList<>();
 
     // Students with last name starting with M-Z use a LinkedList
-    private static LinkedList<Node<String>> shingles = new LinkedList<>();
+    //private static LinkedList<Node<String>> shingles = new LinkedList<>();
 
     // shingle length (in words)
     private final static int k = 3;
@@ -35,21 +35,20 @@ public class Main {
         // Name of file to read, assumes files have a .txt extension and that they are stored in a folder named files
         // Assumes file name is provided as an argument (use Run --> Edit Configurations in IntelliJ to set name or
         // run program from the Terminal window).
-        String fileName = ".\\files\\" + args[0];
-
+        String fileName = "/Users/KevinCYZ/IdeaProjects/project1_s2023-kevincyz/files/" + args[0];
         // Text file contents read into a single variable named fileText
         String fileText = "";
         try {
             fileText = Files.readString(Path.of(fileName));
-        } catch (IOException e){
+        } catch (IOException e) {
             System.err.format("Exception while reading %s", fileName);
         }
 
         // Provide some info on the file that was read.
-        System.out.printf("%s contains %d characters\n", fileName, fileText.length());
+        System.out.printf("Christie.txt contains %d characters\n", fileText.length());
 
         // Convert to lower case and throw away all characters except for letters.
-        fileText = clean( fileText );
+        fileText = clean(fileText);
 
         // more info about the data
         System.out.printf("after cleaning, %d characters remain\n", fileText.length());
@@ -64,9 +63,23 @@ public class Main {
                   Each Node should store a shingle (String) consisting of k words
                   and a count of the number of times that shingle has appeared in the text.
          */
+        int counter = 0;
+        String shingleArray = "";
+        for (int i = 0; i < wordArray.length; ++i){
+            if (counter < 3) {
+                shingleArray+=wordArray[i];
+                ++counter;
+            }
+            else if(counter == 3) {
+                Node newNode = new Node(shingleArray);
+                shingles.add(newNode);
+                counter =0;
+                shingleArray = "";
+            }
+        }
 
-
-
+        for (Node node:shingles) //check if all the shingles contain some string within
+            assert (node.data != null):"The shingle is empty";
         /*
              End TODO - the rest of main() generates a report and dumps the List of shingles to
                         a file
@@ -107,6 +120,7 @@ public class Main {
 
             for( Node<String> aNode : shingles ){
                 writer.write(aNode.toString() + '\n');
+
             }
             writer.close();
         } catch (IOException e) {
