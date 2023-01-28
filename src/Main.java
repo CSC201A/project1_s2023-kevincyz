@@ -11,10 +11,7 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.Collections;
+import java.util.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -45,7 +42,7 @@ public class Main {
         }
 
         // Provide some info on the file that was read.
-        System.out.printf("Christie.txt contains %d characters\n", fileText.length());
+        System.out.printf("%s contains %d characters\n",args[0], fileText.length());
 
         // Convert to lower case and throw away all characters except for letters.
         fileText = clean(fileText);
@@ -63,23 +60,35 @@ public class Main {
                   Each Node should store a shingle (String) consisting of k words
                   and a count of the number of times that shingle has appeared in the text.
          */
-        int counter = 0;
-        String shingleArray = "";
-        for (int i = 0; i < wordArray.length; ++i){
-            if (counter < 3) {
-                shingleArray+=wordArray[i];
-                ++counter;
+        int size = shingles.size();
+        String shingleString = "";//temporary variable for adding to the array list
+        boolean repeat = false;
+        for (int i = 2; i < wordArray.length;++i) {
+            Iterator iter = shingles.iterator();
+            shingleString = wordArray[i - 2] + " " + wordArray[i - 1] + " " + wordArray[i];
+            Node node = new Node(shingleString);
+            if (size == 0) {
+                shingles.add(node);
+                ++size;
             }
-            else if(counter == 3) {
-                Node newNode = new Node(shingleArray);
-                shingles.add(newNode);
-                counter =0;
-                shingleArray = "";
+            else {//if the shingle has something
+                for (int j = 0; j < shingles.size();++j) {
+                    Node current = shingles.get(j);
+                    if (current.data.equals(shingleString)) {
+                        shingles.get(j).incrementCount();
+                        repeat = true;
+                        break;
+                    }
+                }
+                if (!repeat) {
+                    shingles.add(node);
+                }
             }
         }
 
+
         for (Node node:shingles) //check if all the shingles contain some string within
-            assert (node.data != null):"The shingle is empty";
+            assert (node.data != null):"The shingle is empty";//check if every node in the array list is empty
         /*
              End TODO - the rest of main() generates a report and dumps the List of shingles to
                         a file
