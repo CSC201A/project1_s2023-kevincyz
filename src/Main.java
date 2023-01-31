@@ -11,6 +11,7 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -60,32 +61,29 @@ public class Main {
                   Each Node should store a shingle (String) consisting of k words
                   and a count of the number of times that shingle has appeared in the text.
          */
-        int size = shingles.size();
         String shingleString = "";//temporary variable for adding to the array list
-        boolean repeat = false;
         for (int i = 2; i < wordArray.length;++i) {
-            Iterator iter = shingles.iterator();
             shingleString = wordArray[i - 2] + " " + wordArray[i - 1] + " " + wordArray[i];
             Node node = new Node(shingleString);
-            if (size == 0) {
+            boolean repeat = false;
+            if (shingles.size() == 0){
                 shingles.add(node);
-                ++size;
             }
-            else {//if the shingle has something
-                for (int j = 0; j < shingles.size();++j) {
+            else {
+                for (int j = 0; j < shingles.size(); ++j) {
                     Node current = shingles.get(j);
-                    if (current.data.equals(shingleString)) {
-                        shingles.get(j).incrementCount();
+                    String str1 = (String) current.data;
+                    if (shingleString.equals(str1)){
+                        current.incrementCount();
                         repeat = true;
                         break;
                     }
                 }
-                if (!repeat) {
+                if (repeat == false) {
                     shingles.add(node);
                 }
             }
         }
-
 
         for (Node node:shingles) //check if all the shingles contain some string within
             assert (node.data != null):"The shingle is empty";//check if every node in the array list is empty
