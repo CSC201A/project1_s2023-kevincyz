@@ -64,7 +64,8 @@ public class Main {
         String shingleString = "";//temporary variable for adding to the array list
         for (int i = 2; i < wordArray.length;++i) {
             shingleString = wordArray[i - 2] + " " + wordArray[i - 1] + " " + wordArray[i];
-            assert(wordArray[i-2]!= "" &&wordArray[i-1]!= ""&&wordArray[i]!= ""):"Empty string encountered";
+            //ensure all three words are not empty
+            assert(wordArray[i-2]!= "" ||wordArray[i-1]!= ""||wordArray[i]!= ""):"Empty string encountered";
             Node node = new Node(shingleString);
             boolean repeat = false;
             if (shingles.size() == 0){
