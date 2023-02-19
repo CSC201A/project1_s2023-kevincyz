@@ -1,0 +1,4 @@
+Approach was fine.
+
+Remember that it's not OK in Java to compare Strings using == or !=; compares memory addresses only.
+    assert(wordArray[i-2]!= "" ||wordArray[i-1]!= ""||wordArray[i]!= ""):"Empty string encountered";
